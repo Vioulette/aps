@@ -7,8 +7,12 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Timestamp;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.Random;
 
 import org.apache.commons.lang3.ArrayUtils;
 
@@ -24,9 +28,10 @@ public class MartingaleTesting {
 	int cat = 2;
 	int total = num + cat;
 	private Float[] USMrow = new Float[total];
+	private Map<String, Object> map = new HashMap<String, Object>();
 	
 	
-	public MartingaleTesting () throws SQLException, IOException {
+	public MartingaleTesting (double epsilon, double epsilon1, float lambda) throws SQLException, IOException {
 		System.out.println("Martingale Testing connected");
 		
 		// Connection to DataBase
@@ -56,20 +61,26 @@ public class MartingaleTesting {
 		}
 		
 		//setting up array of random number for p-value calculation
-		FileReader fis = new FileReader("/Users/Mia/Desktop/randomArray.csv");
-		BufferedReader reader = new BufferedReader(fis);
-		String line = reader.readLine();
-		Float rand = (float) 0;
-		rand = Float.parseFloat(line);
-		randomNumber.add(rand);
-		for (int i=0; i<1999; i++) {
-			line = reader.readLine();
-			//System.out.println(line);
-			rand = (float) 0;
-			rand = Float.parseFloat(line);
-			randomNumber.add(rand);
+//		FileReader fis = new FileReader("/Users/Mia/Desktop/randomArray.csv");
+//		BufferedReader reader = new BufferedReader(fis);
+//		String line = reader.readLine();
+//		Float rand = (float) 0;
+//		rand = Float.parseFloat(line);
+//		randomNumber.add(rand);
+//		for (int i=0; i<1999; i++) {
+//			line = reader.readLine();
+//			//System.out.println(line);
+//			rand = (float) 0;
+//			rand = Float.parseFloat(line);
+//			randomNumber.add(rand);
+//		}
+//		reader.close();
+		
+		Random rand = new Random();
+		for (int i=0; i<stream.size(); i++) {
+			Float randNum = rand.nextFloat();
+			randomNumber.add(randNum);
 		}
-		reader.close();
 		
 		//final analysis of data stream
 		//initialization
@@ -106,26 +117,42 @@ public class MartingaleTesting {
 				}
 				firstPoint++;
 			}
+			//initializing the first martingale value for the user
+			if (a==0) {
+				map.put("id", 1);
+				map.put("user_id", 19775920);
+				map.put("mt_value", 1);
+				client.insert("mt_values", map);
+				map.clear();
+			}
 			pValue = (float) calculatePvalue(firstPoint);
 			//System.out.println(pValue);
 			pValueComp = (float) (1-pValue);
 			//choose epsilon here
-			pValue = (float) Math.pow(pValue, -.2);
-			pValue = pValue*((float) .8);
+			pValue = (float) Math.pow(pValue, epsilon1);
+			pValue = pValue*((float) epsilon);
 			//System.out.println("P value after calculations = " + pValue);
 			MTprevious1=MTprevious1*pValue;
 			//System.out.println("MTprevious1 = " + MTprevious1);
-			pValueComp = (float) Math.pow(pValueComp, -.2);
-			pValueComp = pValueComp*((float) .8);
+			pValueComp = (float) Math.pow(pValueComp, epsilon1);
+			pValueComp = pValueComp*((float) epsilon);
 			//System.out.println("P valueComp after calculations = " + pValueComp);
 			MTprevious2=MTprevious2*pValueComp;
 			//System.out.println("MTprevious2 = " + MTprevious2);
 			MT = (MTprevious1 + MTprevious2)/2;
 			//System.out.println("Martingale value is =" + MT);
 			//System.out.println(MT);
-			if (MT > (float) 14 & testingArray.size()>100) {
+			//inserting the most recent martingale value in the database
+			client.updateMT(19775920, MT, 0);
+//			map.put("id", 1);
+//			map.put("user_id", 19775920);
+//			map.put("mt_value", MT);
+//			client.insert("mt_values", map);
+//			map.clear();
+			if (MT > lambda & testingArray.size()>100) {
 				System.out.println("MT value = " + MT);
 				System.out.println("Alarm at point: " + a);
+				client.updateMT(19775920, MT, a);
 				MTprevious1 = 1;
 				MTprevious2 = 1;
 				MT = 1;

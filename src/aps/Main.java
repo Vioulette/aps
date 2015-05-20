@@ -42,15 +42,17 @@ public class Main {
 		//ClassifyFeed classifyFeed = new ClassifyFeed();
 		
 		//Martingale test for a stream of data
-		
-		MartingaleTesting MartingaleTesting = new MartingaleTesting();
+		//parameters: MartingaleTesting(epsilon, (1-epsilon), threshold)
+		//MartingaleTesting MartingaleTesting = new MartingaleTesting(.8, -.2, 11);
 		
 		//Trying to find validation data 
 		
-		//Validation validation = new Validation ();
-		//validation.saveCases();
-		//validation.findStatuses("I so depressed");
-		//validation.getUser(595835743488122881L);
+		Validation validation = new Validation ();
+		//validation.collectUsers("megan");
+		//validation.showId("@TryBeingStrong");
+		//validation.saveCase(2401356342L);
+		validation.findStatuses("I can't do it anymore");
+		//validation.getUser(600915743190843392L);
 		
 		
 //		String file = "/Users/Mia/Desktop/HD_messages.csv";
