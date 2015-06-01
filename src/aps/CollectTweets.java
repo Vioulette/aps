@@ -16,6 +16,7 @@ public class CollectTweets extends Thread {
 		System.out.println("CollectTweets active");
 
 		try {
+			System.out.println("Step 1");
 			timeRemaining = twitter.rateLimit();
 			if(timeRemaining==0){
 				twitter.collectTweets();
@@ -27,10 +28,10 @@ public class CollectTweets extends Thread {
 				System.out.println("Twitter Time remaining = " + (timeRemaining * 1.66666667) / 100000 + " minutes");
 				CollectTweets.sleep(timeRemaining);
 			}
-		} catch (TwitterException | SQLException | InterruptedException e) {
+		} catch (TwitterException | InterruptedException | SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-		}
+		}	
 		
 		this.run();
 	}

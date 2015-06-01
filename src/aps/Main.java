@@ -38,21 +38,31 @@ public class Main {
 		
 		//CollectFeed collectFeed = new CollectFeed();
 		//CollectTweets collectTweets = new CollectTweets();
-	    //ClassifyTweets classifyTweets = new ClassifyTweets();
+	   // ClassifyTweets classifyTweets = new ClassifyTweets();
 		//ClassifyFeed classifyFeed = new ClassifyFeed();
 		
 		//Martingale test for a stream of data
-		//parameters: MartingaleTesting(epsilon, (1-epsilon), threshold)
-		//MartingaleTesting MartingaleTesting = new MartingaleTesting(.8, -.2, 11);
+		//parameters: MartingaleTesting(epsilon, (1-epsilon), threshold, testing size)
+		//MartingaleTesting1 MartingaleTesting1 = new MartingaleTesting1(.9, -.1, 5, 50);
+		//MartingaleTesting MartingaleTesting = new MartingaleTesting(.8, -.2, 10f);
 		
 		//Trying to find validation data 
 		
-		Validation validation = new Validation ();
+		//Validation validation = new Validation ();
 		//validation.collectUsers("megan");
-		//validation.showId("@TryBeingStrong");
-		//validation.saveCase(2401356342L);
-		validation.findStatuses("I can't do it anymore");
-		//validation.getUser(600915743190843392L);
+		//validation.showId("@MindofMange");
+		//validation.saveCase(312429642L);
+		//validation.findStatuses("I'm going to kill myself");
+		//validation.getUser(603077130872754177L);
+		
+		//This class used to collect and assemble the messages and annotations for the NYC database of tweets
+		//TestingSuper testing = new TestingSuper();
+		
+		//This class was created to save the time postings of a regular user
+		//Simulation simulation = new Simulation ();
+		
+		//This class is being used to create the database of messages for annotation
+		CorpusCollection corpusCollection = new CorpusCollection();
 		
 		
 //		String file = "/Users/Mia/Desktop/HD_messages.csv";

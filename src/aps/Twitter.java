@@ -60,6 +60,7 @@ public class Twitter {
 	
 	public void collectTweets () throws TwitterException, SQLException {
 		
+		System.out.println("Step 2");
 		id_twitter = twitter.getId();
 		User user = twitter.showUser(id_twitter);
 	
@@ -141,7 +142,7 @@ public class Twitter {
 	}
 	
 	public PagableResponseList<User> getFriends (User user) throws TwitterException{
-		
+		System.out.println("getFriends");
 		id_twitter = user.getId();
 		long cursor = -1;
 		PagableResponseList<User> friends = twitter.getFriendsList(id_twitter, cursor);
@@ -162,6 +163,7 @@ public class Twitter {
 					  /*		      */
 	
 	public void insertTwitterUser(User user) throws SQLException {
+		System.out.println("insertTwitterUser");
 		List<Long> idUsers = selectTwitterUsers();
 		
 		if(!idUsers.contains(user.getId())) {
@@ -182,7 +184,7 @@ public class Twitter {
 			map.put("description", user.getDescription());
 			map.put("statuses_count", user.getStatusesCount());
 			map.put("friends_count", user.getFriendsCount());
-			map.put("following", null);
+			map.put("following", user.getFriendsCount());
 			map.put("screen_name", user.getScreenName());
 			map.put("created", user.getCreatedAt().toString());
 			map.put("modified", null);
@@ -272,7 +274,7 @@ public class Twitter {
 	
 	
 	public void insertTwitterFriendUsers(PagableResponseList<User> list) throws SQLException {
-		
+		System.out.println("insertTwitterFriendUsers");
 		java.util.Date date= new java.util.Date();
 		List<Map<String, Object>> relationships = selectTwitterRelationships();
 			
@@ -309,6 +311,7 @@ public class Twitter {
 					  /*		      */
 	
 	public List<Long> selectTwitterStatusesID() throws SQLException {
+		System.out.println("selectTwitterStatusesID");
 		ResultSet rs = client.execQuery("SELECT id FROM twitter_statuses");
 		List<Long> liste = new ArrayList<Long>();
 		while(rs.next()) {

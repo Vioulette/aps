@@ -136,6 +136,7 @@ public class Validation {
 		Status instance = getUser.get(1);
 		User user = instance.getUser();
 		System.out.println(user.getId());
+		System.out.println(user.getStatusesCount());
 		
 	}
 
